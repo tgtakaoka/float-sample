@@ -22,21 +22,23 @@
 #include <ios>
 #include <sstream>
 
-const auto UINT33_MIN = static_cast<float>(UINT32_MAX) + 1;
 const auto FLT_SUBN_MAX = FLT_MIN - FLT_TRUE_MIN;
 const auto FLT_HEX_DIG = FLT_MANT_DIG / 4;
-const auto FLT_HEXADECIMAL_DIG = 5 /*"[+-]0X[01]."*/ + FLT_HEX_DIG /* P[+-]xxx */ + 5;
+
+constexpr auto INT24_MAX = 0x1.0P+23F - 1;
+constexpr auto INT24_MIN = -0x1.0P+23F;
+constexpr auto UINT24_MAX = 0x1.0P+24F - 1;
 
 void i32(const char *msg, int v) {
     printf("%-16s = %6d\n", msg, v);
 }
 
 void f32(const char *msg, float v) {
-    std::ostringstream hex, dec;
-    hex << std::uppercase << std::showpos << std::showpoint << std::setprecision(FLT_HEX_DIG)
-        << std::hexfloat << v;
-    dec << std::showpos << std::setprecision(FLT_DECIMAL_DIG) << std::defaultfloat << v;
-    printf("%-16s = %-*s    %s\n", msg, FLT_HEXADECIMAL_DIG, hex.str().c_str(), dec.str().c_str());
+    char hex[FLT_HEX_DIG + 16];
+    char dec[FLT_DECIMAL_DIG + 16];
+    snprintf(hex, sizeof(hex), "%+.*A", FLT_HEX_DIG, v);
+    snprintf(dec, sizeof(dec), "%+.*g", FLT_DECIMAL_DIG, v);
+    printf("%-16s = %-*s    %s\n", msg, FLT_HEX_DIG + 11, hex, dec);
 }
 
 int main() {
@@ -49,10 +51,10 @@ int main() {
     i32("FLT_MAX_10_EXP", FLT_MAX_10_EXP);
     i32("FLT_MIN_10_EXP", FLT_MIN_10_EXP);
 
-    f32("INT32_MAX", INT32_MAX);
-    f32("INT32_MIN", INT32_MIN);
-    f32("UINT32_MAX", UINT32_MAX);
-    f32("UINT32_MAX+1", UINT33_MIN);
+    f32("INT24_MAX", INT24_MAX);
+    f32("INT24_MIN", INT24_MIN);
+    f32("UINT24_MAX", UINT24_MAX);
+    f32("UINT24_MAX+1", UINT24_MAX + 1);
 
     f32("FLT_MAX", FLT_MAX);
     f32("FLT_MIN", FLT_MIN);

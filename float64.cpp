@@ -19,9 +19,12 @@
 #include <stdint.h>
 #include <stdio.h>
 
-const auto UINT65_MIN = static_cast<double>(UINT64_MAX) + 1;
 const auto DBL_SUBN_MAX = DBL_MIN - DBL_TRUE_MIN;
 const auto DBL_HEX_DIG = DBL_MANT_DIG / 4;
+
+constexpr auto INT53_MAX = 0x1.0P+52 - 1;
+constexpr auto INT53_MIN = -0x1.0P+52;
+constexpr auto UINT53_MAX = 0x1.0P+53 - 1;
 
 void i64(const char *msg, int v) {
     printf("%-16s = %6d\n", msg, v);
@@ -45,10 +48,10 @@ int main() {
     i64("DBL_MAX_10_EXP", DBL_MAX_10_EXP);
     i64("DBL_MIN_10_EXP", DBL_MIN_10_EXP);
 
-    f64("INT64_MAX", INT64_MAX);
-    f64("INT64_MIN", INT64_MIN);
-    f64("UINT64_MAX", UINT64_MAX);
-    f64("UINT64_MAX+1", UINT65_MIN);
+    f64("INT53_MAX", INT53_MAX);
+    f64("INT53_MIN", INT53_MIN);
+    f64("UINT53_MAX", UINT53_MAX);
+    f64("UINT53_MAX+1", UINT53_MAX + 1);
 
     f64("DBL_MAX", DBL_MAX);
     f64("DBL_MIN", DBL_MIN);

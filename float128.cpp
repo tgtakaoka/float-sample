@@ -30,6 +30,10 @@ const auto FLT128_TRUE_MIN = ldexpq(1, FLT128_MIN_EXP - FLT128_MANT_DIG);
 const auto FLT128_SUBN_MAX = FLT128_MIN - FLT128_TRUE_MIN;
 const auto FLT128_HEX_DIG = FLT128_MANT_DIG / 4;
 
+constexpr auto INT113_MAX = 0x1.0P+112Q - 1;
+constexpr auto INT113_MIN = -0x1.0P+112Q;
+constexpr auto UINT113_MAX = 0x1.0P+113Q - 1;
+
 void i64(const char *msg, int v) {
     printf("%-18s = %6d\n", msg, v);
 }
@@ -52,10 +56,10 @@ int main() {
     i64("FLT128_MAX_10_EXP", FLT128_MAX_10_EXP);
     i64("FLT128_MIN_10_EXP", FLT128_MIN_10_EXP);
 
-    f128("INT64_MAX", INT64_MAX);
-    f128("INT64_MIN", INT64_MIN);
-    f128("UINT64_MAX", UINT64_MAX);
-    f128("UINT64_MAX+1", UINT65_MIN);
+    f128("INT113_MAX", INT113_MAX);
+    f128("INT113_MIN", INT113_MIN);
+    f128("UINT113_MAX", UINT113_MAX);
+    f128("UINT113_MAX+1", UINT113_MAX + 1);
 
     f128("FLT128_MAX", FLT128_MAX);
     f128("FLT128_MIN", FLT128_MIN);
