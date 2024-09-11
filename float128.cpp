@@ -67,6 +67,9 @@ int main() {
     f128("FLT128_TRUE_MIN", FLT128_TRUE_MIN);
     f128("FLT128_EPSILON", FLT128_EPSILON);
 
+    f128("+HUGE_VALQ", +HUGE_VALQ);
+    f128("-HUGE_VALQ", -HUGE_VALQ);
+
     return 0;
 }
 

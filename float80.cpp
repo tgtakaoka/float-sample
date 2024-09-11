@@ -59,6 +59,9 @@ int main() {
     f80("LDBL_TRUE_MIN", LDBL_TRUE_MIN);
     f80("LDBL_EPSILON", LDBL_EPSILON);
 
+    f80("+HUGE_VALL", +HUGE_VALL);
+    f80("-HUGE_VALL", -HUGE_VALL);
+
     return 0;
 }
 

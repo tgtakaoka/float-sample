@@ -62,6 +62,9 @@ int main() {
     f32("FLT_TRUE_MIN", FLT_TRUE_MIN);
     f32("FLT_EPSILON", FLT_EPSILON);
 
+    f32("+HUGE_VALF", +HUGE_VALF);
+    f32("-HUGE_VALF", -HUGE_VALF);
+
     return 0;
 }
 

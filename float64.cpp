@@ -59,6 +59,9 @@ int main() {
     f64("DBL_TRUE_MIN", DBL_TRUE_MIN);
     f64("DBL_EPSILON", DBL_EPSILON);
 
+    f64("+HUGE_VAL", +HUGE_VAL);
+    f64("-HUGE_VAL", -HUGE_VAL);
+
     return 0;
 }
 
