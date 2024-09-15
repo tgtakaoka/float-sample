@@ -62,6 +62,16 @@ int main() {
     f64("+HUGE_VAL", +HUGE_VAL);
     f64("-HUGE_VAL", -HUGE_VAL);
 
+    for (auto i64 = INT64_C(0x4000000000000); i64 > 0; i64 <<= 1) {
+        const auto f64 = static_cast<double>(i64-1);
+        printf("i64: %016lX %.13A %016lX\n", i64-1, f64, static_cast<int64_t>(f64));
+    }
+
+    for (auto u64 = UINT64_C(0x400000000000); u64; u64 <<= 1) {
+        const auto f64 = static_cast<double>(u64-1);
+        printf("u64: %016lX %.13A %016lX\n", u64-1, f64, static_cast<uint64_t>(f64));
+    }
+
     return 0;
 }
 
