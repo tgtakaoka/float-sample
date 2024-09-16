@@ -41,6 +41,21 @@ void f32(const char *msg, float v) {
     printf("%-16s = %-*s    %s\n", msg, FLT_HEX_DIG + 11, hex, dec);
 }
 
+void f32r(const char *msg, float v) {
+    union {
+        float f32;
+        uint32_t u32;;
+    } data;
+    data.f32 = v;
+    char hex[FLT_HEX_DIG + 16];
+    char dec[FLT_DECIMAL_DIG + 16];
+    const uint16_t tag = data.u32 >> (FLT_MANT_DIG - 1);
+    snprintf(hex, sizeof(hex), " 0X%d.%06X %03X", (tag & 0x7F) == 0 ? 0 : 1,
+             (data.u32 & UINT32_C(0x007FFFFF)) << 1, tag);
+    snprintf(dec, sizeof(dec), "%+.*g", FLT_DECIMAL_DIG, v);
+    printf("%-16s = %-*s    %s\n", msg, FLT_HEX_DIG + 12, hex, dec);
+}
+
 int main() {
     i32("FLT_DIG", FLT_DIG);
     i32("FLT_DECIMAL_DIG", FLT_DECIMAL_DIG);
@@ -62,8 +77,10 @@ int main() {
     f32("FLT_TRUE_MIN", FLT_TRUE_MIN);
     f32("FLT_EPSILON", FLT_EPSILON);
 
-    f32("+HUGE_VALF", +HUGE_VALF);
-    f32("-HUGE_VALF", -HUGE_VALF);
+    f32r("+HUGE_VALF", +HUGE_VALF);
+    f32r("-HUGE_VALF", -HUGE_VALF);
+    f32r("+NAN", +NAN);
+    f32r("-NAN", -NAN);
 
     return 0;
 }

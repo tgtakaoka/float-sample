@@ -38,6 +38,22 @@ void f64(const char *msg, double v) {
     printf("%-16s = %-*s    %s\n", msg, DBL_HEX_DIG + 11, hex, dec);
 }
 
+void f64r(const char *msg, double v) {
+    union {
+        double f64;
+        uint64_t u64;
+        ;
+    } data;
+    data.f64 = v;
+    char hex[DBL_HEX_DIG + 16];
+    char dec[DBL_DECIMAL_DIG + 16];
+    const uint16_t tag = data.u64 >> (DBL_MANT_DIG - 1);
+    snprintf(hex, sizeof(hex), " 0X%d.%013lX %03X", (tag & 0x7FF) == 0 ? 0 : 1,
+            data.u64 & UINT64_C(0x000FFFFFFFFFFFFF), tag);
+    snprintf(dec, sizeof(dec), "%+.*g", DBL_DECIMAL_DIG, v);
+    printf("%-16s = %-*s    %s\n", msg, DBL_HEX_DIG + 12, hex, dec);
+}
+
 int main() {
     i64("DBL_DIG", DBL_DIG);
     i64("DBL_DECIMAL_DIG", DBL_DECIMAL_DIG);
@@ -59,8 +75,10 @@ int main() {
     f64("DBL_TRUE_MIN", DBL_TRUE_MIN);
     f64("DBL_EPSILON", DBL_EPSILON);
 
-    f64("+HUGE_VAL", +HUGE_VAL);
-    f64("-HUGE_VAL", -HUGE_VAL);
+    f64r("+HUGE_VAL", +HUGE_VAL);
+    f64r("-HUGE_VAL", -HUGE_VAL);
+    f64r("+NAN", +NAN);
+    f64r("-NAN", -NAN);
 
     for (auto i64 = INT64_C(0x4000000000000); i64 > 0; i64 <<= 1) {
         const auto f64 = static_cast<double>(i64-1);

@@ -22,9 +22,9 @@
 const auto LDBL_SUBN_MAX = LDBL_MIN - LDBL_TRUE_MIN;
 const auto LDBL_HEX_DIG = LDBL_MANT_DIG / 4 - 1;
 
-const auto int64_max = 0x1.0P+63L -1;
+const auto int64_max = 0x1.0P+63L - 1;
 const auto int64_min = -0x1.0P+63L;
-const auto uint64_max = 0x1.0P+64L -1;
+const auto uint64_max = 0x1.0P+64L - 1;
 
 void i64(const char *msg, int v) {
     printf("%-16s = %6d\n", msg, v);
@@ -34,6 +34,23 @@ void f80(const char *msg, long double v) {
     char hex[LDBL_HEX_DIG + 16];
     char dec[LDBL_DECIMAL_DIG + 16];
     snprintf(hex, sizeof(hex), "%+.*LA", LDBL_HEX_DIG, v);
+    snprintf(dec, sizeof(dec), "%+.*Lg", LDBL_DECIMAL_DIG, v);
+    printf("%-16s = %-*s    %s\n", msg, LDBL_HEX_DIG + 12, hex, dec);
+}
+
+void f80r(const char *msg, long double v) {
+    union {
+        long double f80;
+        struct {
+            uint64_t sig;
+            uint16_t tag;
+        };
+    } data;
+    data.f80 = v;
+    char hex[LDBL_HEX_DIG + 16];
+    char dec[LDBL_DECIMAL_DIG + 16];
+    snprintf(hex, sizeof(hex), " 0X%X.%015lX %04X", static_cast<uint8_t>(data.sig >> 60),
+            data.sig & UINT64_C(0x0FFFFFFFFFFFFFFF), data.tag);
     snprintf(dec, sizeof(dec), "%+.*Lg", LDBL_DECIMAL_DIG, v);
     printf("%-16s = %-*s    %s\n", msg, LDBL_HEX_DIG + 12, hex, dec);
 }
@@ -59,8 +76,13 @@ int main() {
     f80("LDBL_TRUE_MIN", LDBL_TRUE_MIN);
     f80("LDBL_EPSILON", LDBL_EPSILON);
 
-    f80("+HUGE_VALL", +HUGE_VALL);
-    f80("-HUGE_VALL", -HUGE_VALL);
+    f80r("+HUGE_VALL", +HUGE_VALL);
+    f80r("-HUGE_VALL", -HUGE_VALL);
+    f80r("+NAN", +NAN);
+    f80r("-NAN", -NAN);
+
+    f80("DBL_SUBN_MAX", DBL_MIN - DBL_TRUE_MIN);
+    f80("DBL_TRUE_MIN", DBL_TRUE_MIN);
 
     return 0;
 }
