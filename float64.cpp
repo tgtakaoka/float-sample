@@ -22,9 +22,9 @@
 const auto DBL_SUBN_MAX = DBL_MIN - DBL_TRUE_MIN;
 const auto DBL_HEX_DIG = DBL_MANT_DIG / 4;
 
-constexpr auto INT53_MAX = 0x1.0P+52 - 1;
-constexpr auto INT53_MIN = -0x1.0P+52;
-constexpr auto UINT53_MAX = 0x1.0P+53 - 1;
+constexpr auto INT53_MAX = static_cast<double>(INT64_C(0x000FFFFFFFFFFFFF));
+constexpr auto INT53_MIN = static_cast<double>(-INT64_C(0x0010000000000000));
+constexpr auto UINT53_MAX = static_cast<double>(UINT64_C(0x001FFFFFFFFFFFFF));
 
 void i64(const char *msg, int v) {
     printf("%-16s = %6d\n", msg, v);
@@ -69,6 +69,11 @@ int main() {
     f64("UINT53_MAX", UINT53_MAX);
     f64("UINT53_MAX+1", UINT53_MAX + 1);
 
+    f64("INT64_MAX", INT64_MAX);
+    f64("INT64_MIN", INT64_MIN);
+    f64("UINT64_MAX", UINT64_MAX);
+    f64("UINT64_MAX+1", UINT64_MAX + 1);
+
     f64("DBL_MAX", DBL_MAX);
     f64("DBL_MIN", DBL_MIN);
     f64("DBL_SUBN_MAX", DBL_SUBN_MAX);
@@ -79,16 +84,6 @@ int main() {
     f64r("-HUGE_VAL", -HUGE_VAL);
     f64r("+NAN", +NAN);
     f64r("-NAN", -NAN);
-
-    for (auto i64 = INT64_C(0x4000000000000); i64 > 0; i64 <<= 1) {
-        const auto f64 = static_cast<double>(i64-1);
-        printf("i64: %016lX %.13A %016lX\n", i64-1, f64, static_cast<int64_t>(f64));
-    }
-
-    for (auto u64 = UINT64_C(0x400000000000); u64; u64 <<= 1) {
-        const auto f64 = static_cast<double>(u64-1);
-        printf("u64: %016lX %.13A %016lX\n", u64-1, f64, static_cast<uint64_t>(f64));
-    }
 
     return 0;
 }

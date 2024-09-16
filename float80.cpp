@@ -22,9 +22,9 @@
 const auto LDBL_SUBN_MAX = LDBL_MIN - LDBL_TRUE_MIN;
 const auto LDBL_HEX_DIG = LDBL_MANT_DIG / 4 - 1;
 
-const auto int64_max = 0x1.0P+63L - 1;
-const auto int64_min = -0x1.0P+63L;
-const auto uint64_max = 0x1.0P+64L - 1;
+const auto int64_max = static_cast<long double>(INT64_MAX);
+const auto int64_min = static_cast<long double>(INT64_MIN);
+const auto uint64_max = static_cast<long double>(UINT64_MAX);
 
 void i64(const char *msg, int v) {
     printf("%-16s = %6d\n", msg, v);
