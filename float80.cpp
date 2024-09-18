@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <errno.h>
 #include <float.h>
 #include <math.h>
 #include <stdint.h>
@@ -81,8 +82,15 @@ int main() {
     f80r("+NAN", +NAN);
     f80r("-NAN", -NAN);
 
+    f80("FLT_SUBN_MAX", FLT_MIN - FLT_TRUE_MIN);
+    f80("FLT_TRUE_MIN", FLT_TRUE_MIN);
     f80("DBL_SUBN_MAX", DBL_MIN - DBL_TRUE_MIN);
     f80("DBL_TRUE_MIN", DBL_TRUE_MIN);
+
+    f80("OVERFLOWE", strtold("-0x1.0p+16384", nullptr));
+    perror("OVERFLOW");
+    f80("UNDERFLOWE", strtold("-0x1.0p-16446", nullptr));
+    perror("UNDERFLOW");
 
     return 0;
 }

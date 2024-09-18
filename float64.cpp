@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <errno.h>
 #include <float.h>
 #include <math.h>
 #include <stdint.h>
@@ -84,6 +85,11 @@ int main() {
     f64r("-HUGE_VAL", -HUGE_VAL);
     f64r("+NAN", +NAN);
     f64r("-NAN", -NAN);
+
+    f64("OVERFLOWE", strtod("-0x1.0p+1024", nullptr));
+    perror("OVERFLOW");
+    f64("UNDERFLOWE", strtod("-0x1.0p-1075", nullptr));
+    perror("UNDERFLOW");
 
     return 0;
 }

@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
+#include <errno.h>
 #include <float.h>
 #include <math.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <iomanip>
-#include <ios>
-#include <sstream>
 
 const auto FLT_SUBN_MAX = FLT_MIN - FLT_TRUE_MIN;
 const auto FLT_HEX_DIG = FLT_MANT_DIG / 4;
@@ -87,6 +85,11 @@ int main() {
     f32r("-HUGE_VALF", -HUGE_VALF);
     f32r("+NAN", +NAN);
     f32r("-NAN", -NAN);
+
+    f32("OVERFLOWE", strtof("-0x1.0p+128", nullptr));
+    perror("OVERFLOW");
+    f32("UNDERFLOWE", strtof("-0x1.0p-150", nullptr));
+    perror("UNDERFLOW");
 
     return 0;
 }
