@@ -16,7 +16,7 @@ CXX = g++
 CXX_FLAGS = -std=gnu++17
 LD_FLAGS = -lm -lquadmath
 
-TEST = float float32 float64 float80 float128
+TEST = float float32 float64 float80 float128 ti_float
 
 all: $(TEST)
 
@@ -32,6 +32,8 @@ float64: float64.o
 float80: float80.o
 	$(CXX) $(CXX_FLAGS) $^ $(LD_FLAGS) -o $@
 float128: float128.o
+	$(CXX) $(CXX_FLAGS) $^ $(LD_FLAGS) -o $@
+ti_float: ti_float.o
 	$(CXX) $(CXX_FLAGS) $^ $(LD_FLAGS) -o $@
 
 clean:
